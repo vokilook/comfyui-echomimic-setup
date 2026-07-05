@@ -58,12 +58,12 @@ cd "$CUSTOM_NODES_DIR"
 [ -d "ComfyUI-VideoHelperSuite" ] || git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
 [ -d "ComfyUI-Manager" ] || git clone https://github.com/ltdrdata/ComfyUI-Manager.git
 
-# Установка зависимостей EchoMimic
+# Установка зависимостей EchoMimic (исправлено: mediapipe==0.10.8)
 echo -e "\n${YELLOW}Установка зависимостей EchoMimic...${NC}"
 pip install diffusers transformers accelerate safetensors
 pip install opencv-python-headless moviepy ipython
 pip install facexlib basicsr gfpgan ultralytics
-pip install mediapipe-silicon einops omegaconf
+pip install mediapipe==0.10.8 einops omegaconf
 pip install huggingface_hub sentencepiece protobuf
 pip install librosa soundfile ffmpeg-python torchcodec
 pip install decord pyloudnorm
