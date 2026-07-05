@@ -115,6 +115,24 @@ sed -i 's/^comfyui-embedded-docs==.*$/comfyui-embedded-docs>=0.5.0/' requirement
 echo -e "${GREEN}✅ requirements.txt адаптирован${NC}"
 
 # ================================================
+# АВТОМАТИЧЕСКАЯ ПРАВКА requirements.txt
+# ================================================
+echo -e "\n${YELLOW}Адаптация requirements.txt для Python 3.10...${NC}"
+cd "$COMFYUI_DIR"
+cp requirements.txt requirements.txt.bak
+
+# Удаляем ВСЕ строки с comfyui-
+sed -i '/^comfyui-/d' requirements.txt
+
+# Добавляем смягчённые версии
+echo -e "\n# Fixed for Python 3.10 compatibility" >> requirements.txt
+echo "comfyui-frontend-package>=1.45.0" >> requirements.txt
+echo "comfyui-workflow-templates>=0.11.0" >> requirements.txt
+echo "comfyui-embedded-docs>=0.5.0" >> requirements.txt
+
+echo -e "${GREEN}✅ requirements.txt адаптирован для Python 3.10${NC}"
+
+# ================================================
 # Шаг 6: Установка зависимостей ComfyUI и PyTorch
 # ================================================
 echo -e "\n${YELLOW}[6/7] Установка зависимостей...${NC}"
