@@ -1,0 +1,32 @@
+﻿# ComfyUI + EchoMimic V3 Flash Dependencies
+
+# Основные
+numpy>=1.24.0
+einops
+omegaconf
+
+# Transformers
+transformers>=4.50.3
+tokenizers>=0.13.3
+sentencepiece
+safetensors>=0.4.2
+accelerate
+
+# Media
+opencv-python-headless
+pillow
+moviepy
+decord
+librosa
+soundfile
+pyloudnorm
+
+# Deep Learning
+diffusers
+facexlib
+basicsr
+gfpgan
+ultralytics
+mediapipe-silicon
+ffmpeg-python
+torchcodec
