@@ -33,7 +33,7 @@ else
 fi
 
 # ================================================
-# Шаг 2: Установка Python 3.10 (если отсутствует)
+# Шаг 2: Установка Python 3.10
 # ================================================
 echo -e "\n${YELLOW}[2/7] Проверка Python 3.10...${NC}"
 
@@ -41,17 +41,33 @@ if command -v python3.10 &> /dev/null; then
     echo -e "${GREEN}✅ Python 3.10 уже установлен: $(python3.10 --version)${NC}"
     PYTHON_CMD="python3.10"
 else
-    echo -e "${YELLOW}Python 3.10 не найден. Устанавливаю...${NC}"
+    echo -e "${YELLOW}Python 3.10 не найден. Компилирую из исходников...${NC}"
+    
+    # Устанавливаем зависимости
     sudo apt update
-    sudo apt install python3.10 python3.10-venv python3.10-dev -y
+    sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev \
+        libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+        libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev -y
+    
+    # Скачиваем исходники
+    cd /tmp
+    wget https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz
+    tar -xzf Python-3.10.13.tgz
+    cd Python-3.10.13
+    
+    # Компилируем
+    ./configure --enable-optimizations --prefix=/usr/local
+    make -j$(nproc)
+    sudo make altinstall
+    
+    # Создаём ссылку
+    sudo ln -sf /usr/local/bin/python3.10 /usr/bin/python3.10
     
     if command -v python3.10 &> /dev/null; then
         echo -e "${GREEN}✅ Python 3.10 успешно установлен: $(python3.10 --version)${NC}"
         PYTHON_CMD="python3.10"
     else
-        echo -e "${RED}Не удалось установить Python 3.10. Попробуйте вручную:${NC}"
-        echo "  sudo add-apt-repository ppa:deadsnakes/ppa -y"
-        echo "  sudo apt update && sudo apt install python3.10 python3.10-venv python3.10-dev -y"
+        echo -e "${RED}Не удалось установить Python 3.10.${NC}"
         exit 1
     fi
 fi
