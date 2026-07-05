@@ -1,0 +1,56 @@
+# ================================================
+# Makefile для управления установкой ComfyUI + EchoMimic
+# Использование make команда
+# ================================================
+
+.PHONY all prepare env comfyui echomimic models status clean help
+
+all prepare env comfyui echomimic
+	@echo ✅ Полная установка завершена!
+
+status
+	@echo === Проверка статуса ===
+	@echo Python 3.10 $(shell command -v python3.10 devnull 2&1 && echo '✅'  echo '❌')
+	@echo Окружение comfy_echo $(shell test -d ~comfy_echo && echo '✅'  echo '❌')
+	@echo ComfyUI $(shell test -d ~ComfyUI_Echo && echo '✅'  echo '❌')
+	@echo EchoMimic $(shell test -d ~ComfyUI_Echocustom_nodesComfyUI_EchoMimic && echo '✅'  echo '❌')
+	@echo Модели $(shell test -d ~ComfyUI_Echomodelsecho_mimicechomimicv3-flash-pro && echo '✅'  echo '❌')
+
+prepare
+	@echo === Подготовка системы ===
+	.scripts01_prepare_system.sh
+
+env
+	@echo === Создание окружения ===
+	.scripts02_create_env.sh
+
+comfyui
+	@echo === Установка ComfyUI ===
+	.scripts03_install_comfyui.sh
+
+echomimic
+	@echo === Установка EchoMimic и патчей ===
+	.scripts04_install_echomimic.sh
+
+models
+	@echo === Скачивание моделей ===
+	.scripts05_download_models.sh
+
+clean
+	@echo === Очистка ===
+	rm -rf ~ComfyUI_Echo
+	rm -rf ~comfy_echo
+	rm -f tmpstep_complete
+	@echo ✅ Очистка завершена
+
+help
+	@echo Доступные команды
+	@echo   make all      - полная установка (prepare → env → comfyui → echomimic)
+	@echo   make status   - проверить статус установки
+	@echo   make prepare  - только подготовка системы (Python, CUDA, пакеты)
+	@echo   make env      - только создание окружения
+	@echo   make comfyui  - только установка ComfyUI
+	@echo   make echomimic - только установка EchoMimic и патчей
+	@echo   make models   - только скачать модели
+	@echo   make clean    - удалить всё (окружение, ComfyUI, модели)
+	@echo   make help     - показать эту справку
